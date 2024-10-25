@@ -1,33 +1,33 @@
-class Solution {
+import java.util.Arrays;
+
+public class Solution {
     public int findRadius(int[] houses, int[] heaters) {
-
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
-        for (int i : heaters)
-            pq.add(i);
-
+        // Sort both arrays
         Arrays.sort(houses);
+        Arrays.sort(heaters);
 
-        int x = pq.poll();
+        int radius = 0;
 
-        int result = 0;
+        // For each house, find the minimum distance to the nearest heater
+        for (int house : houses) {
+            // Binary search to find the closest heater for the current house
+            int index = Arrays.binarySearch(heaters, house);
 
-        for (int i : houses) {
-            if (i <= x || pq.size() == 0) {
-                result = Math.max(result, Math.abs(x - i));
-            } else {
-                while (pq.size() > 0) {
-                    int y = pq.peek();
-                    if (y - i <= i - x) {
-                        x = pq.poll();
-                    } else {
-                        break;
-                    }
-                }
-                result = Math.max(result, Math.abs(i - x));
+            if (index < 0) {
+                // If the house is not found in heaters array, find the nearest heaters
+                index = -(index + 1);
+
+                int leftHeaterDistance = (index - 1 >= 0) ? house - heaters[index - 1] : Integer.MAX_VALUE;
+                int rightHeaterDistance = (index < heaters.length) ? heaters[index] - house : Integer.MAX_VALUE;
+
+                // Take the minimum distance from either the left or right heater
+                int closestDistance = Math.min(leftHeaterDistance, rightHeaterDistance);
+
+                // Update the maximum radius required
+                radius = Math.max(radius, closestDistance);
             }
         }
 
-        return result;
-
+        return radius;
     }
 }
