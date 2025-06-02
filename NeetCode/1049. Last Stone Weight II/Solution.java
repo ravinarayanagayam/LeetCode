@@ -25,6 +25,7 @@ public class Solution {
         return 0; // Just for completeness
     }
 }
+<<<<<<< HEAD
 /*
  * Approach:
  * Let totalSum = sum(stones).
@@ -39,3 +40,5 @@ public class Solution {
  * 
  * This is the classic 0/1 Knapsack problem.
  */
+=======
+>>>>>>> origin/main
